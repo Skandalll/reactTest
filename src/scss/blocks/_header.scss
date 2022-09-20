@@ -1,0 +1,33 @@
+.header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 44px;
+  &__icon{
+    width: 40px;
+    margin-right: 16px;
+  }
+  &__logo{
+    display: flex;
+    align-items: center;
+  }
+  &__menu{
+    padding-top: 10px;
+    ul{
+      display: flex;
+      text-decoration: none;
+      list-style: none;
+      justify-content: space-around;
+      width: 196px;
+      align-items: flex-start;
+    }
+  }
+  &__cart{
+    display: flex;
+    align-items: center;
+  }
+  &__price{
+    margin-left: 10px;
+
+  }
+
+}
