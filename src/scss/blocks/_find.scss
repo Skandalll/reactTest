@@ -9,7 +9,7 @@
     font-size: 32px;
   }
   svg{
-    margin-left: 18px;
+    margin-left: 10px;
   }
   &__input{
     margin-left: 14px;
@@ -19,6 +19,7 @@
     font-weight: 400;
     cursor: text;
     outline:none;
+
     &::placeholder{
       color: #C4C4C4;
     }
@@ -30,5 +31,11 @@
     height: 40px;
     border: 1px solid #F3F3F3;
     border-radius: 10px;
+    button{
+      background: #FFFFFF;
+      border: none;
+      font-size: 20px;
+    }
   }
+
 }
