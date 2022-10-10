@@ -1,0 +1,25 @@
+.root{
+  text-align: center;
+  margin: 80px;
+  &Descr{
+    font-size: 20px;
+    padding-top: 20px;
+  }
+  &Title{
+    margin-bottom: 20px;
+  }
+}
+button{
+  border: solid 1px #FE5F1EFF;
+  border-radius: 60px;
+  width: 120px;
+  height: 60px;
+  background-color: white;
+  text-align: center;
+  font-size: 15px;
+  &:hover{
+    background-color:#FE5F1EFF ;
+    transition: 0.3s;
+    color: white;
+  }
+}

@@ -1,27 +1,43 @@
-function PizzaBlock(props){
-    console.log(props)
+import {useState} from "react";
+
+function PizzaBlock({imageUrl,name,price,types,sizes}){
+    const typesList=["Традиционное","Тонкое"]
+    const [activeSize,setActiveSize]=useState("empty")
+    const [activeType,setActiveType]=useState("empty")
+    const [choseDisplay,setChoseDisplay]=useState(false)
+    const [pizzaCount,setPizzaCount]=useState(0)
+
+    function choseDisplayCheck(){
+        if(activeType==="empty"||activeSize==="empty"){
+            setChoseDisplay(true)
+            setTimeout(()=>{setChoseDisplay(false)},5000)
+        }else {
+            setPizzaCount(pizzaCount+1)
+            setChoseDisplay(false)
+        }
+    }
     return (<div className="pizza-block">
         <img
             className="pizza-block__image"
-            src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+            src={imageUrl}
             alt="Pizza"
         />
-        <h4 className="pizza-block__title">{props.named}</h4>
+        <h4 className="pizza-block__title">{name}</h4>
         <div className="pizza-block__selector">
             <ul>
-                <li className="active">тонкое</li>
-                <li>традиционное</li>
+                {types.map((index,i)=>{return (<li onClick={(event)=>{event.target.className==="active"?setActiveType("empty"):setActiveType(i)} } className={ activeType===i?"active":""}> {typesList[index]}</li>)})}
             </ul>
             <ul>
-                <li className="active">26 см.
-                </li>
-                <li>30 см.</li>
-                <li>40 см.</li>
+                {sizes.map((size,i)=>{return (<li onClick={(event)=>{event.target.className==="active"?setActiveSize("empty"):setActiveSize(i)}} className={activeSize===i?"active":""}>{size} см.</li>)})}
             </ul>
+
         </div>
         <div className="pizza-block__bottom">
-            <div className="pizza-block__price">{props.price}₽</div>
-            <div className="button button--outline button--add">
+            <div className="pizza-block__price">{price}₽</div>
+            <div onClick={()=>{
+                choseDisplayCheck()
+            }
+            } className="button button--outline button--add">
                 <svg
                     width="12"
                     height="12"
@@ -35,9 +51,12 @@ function PizzaBlock(props){
                     />
                 </svg>
                 <span>Добавить</span>
-                <i>2</i>
+                <i>{pizzaCount}</i>
+
             </div>
+
         </div>
+        {choseDisplay===true?<h2 className="chose-display">Пожалуйста,выберете тип теста и размер</h2>:null}
     </div>)
 }
 export default PizzaBlock
