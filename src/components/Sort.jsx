@@ -1,6 +1,9 @@
-function  Sort(){
+import {useState} from "react";
+function  Sort({setSortType,sortType}){
+    const [sortVisibility,setSortVisibility]= useState(false)
+    const sortList=["Популярности","Цене","Алфавиту"]
     return (<div className="sort">
-        <div className="sort__label">
+        <div onClick={()=>setSortVisibility((prev)=>!prev)} className="sort__label unselectable" >
             <svg
                 width="10"
                 height="6"
@@ -14,15 +17,21 @@ function  Sort(){
                 />
             </svg>
             <b>Сортировка по:</b>
-            <span>популярности</span>
+            <span >популярности</span>
         </div>
-        <div className="sort__popup">
-            <ul>
-                <li className="active">популярности</li>
-                <li>цене</li>
-                <li>алфавиту</li>
-            </ul>
-        </div>
+        {
+            sortVisibility && (<div className="sort__popup unselectable">
+                <ul>
+                    {
+                        sortList.map((item,i)=>{
+                            return (
+                                <li onClick={()=>setSortType(i)} className={i===sortType?"active":""}>{item}</li>
+                            )
+                        })
+                    }
+                </ul>
+            </div>)
+        }
     </div>)
 }
 export default Sort
