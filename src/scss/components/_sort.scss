@@ -1,8 +1,13 @@
 @import '../variables';
 
 .sort {
+
+    :nth-child(3){
+      order:3 !important;}
+
   position: relative;
   &__label {
+    margin-bottom: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;

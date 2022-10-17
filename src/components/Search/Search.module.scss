@@ -1,0 +1,33 @@
+.root{
+  width: 40%;
+  border: 1px black solid;
+  border-radius: 10px;
+  height: 40px;
+  margin: 20px auto 0px auto;
+  display: flex;
+  align-items: center;
+  padding-left:10px;
+  position: relative;
+  @media (max-width: 981px ) {
+    :nth-child(2  ){
+      order:0 !important;
+    }
+
+  }
+
+}
+.input{
+  width: 80%;
+  padding-left: 10px;
+  margin: 1px;
+  border:none;
+
+}
+.findIcon{
+  width: 20px;
+}
+.deleteIcon{
+  width: 20px;
+  margin:0 12px 0 auto;
+  cursor: pointer;
+}

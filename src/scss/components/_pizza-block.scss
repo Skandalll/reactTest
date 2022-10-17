@@ -32,6 +32,13 @@
       }
 
       li {
+        transition: 0.5s all;
+        &:hover{
+          background: #cfcaca;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+          border-radius: 5px;
+          cursor: auto;
+        }
         padding: 8px;
         flex: 1;
         cursor: pointer;
