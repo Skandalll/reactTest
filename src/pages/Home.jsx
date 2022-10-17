@@ -4,25 +4,31 @@ import {useState} from "react";
 import {useEffect} from "react";
 import Sort from "../components/Sort";
 import Categories from "../components/Categories";
+import Pagination from "../components/Pagination/Pagination";
+import {useContext} from "react";
+import {SearchContext} from "../App";
 
 
-export const Home = ()=>{
+function Home(){
+    const {inputValue,setInputValue} = useContext(SearchContext)
     const [sortType,setSortType]=useState(0);
-    const [pizzasDB,setPizzasDB] = useState([{},{},{},{},{},{},{},{}])
+    const [pizzasDB,setPizzasDB] = useState([{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""}])
     const [isLoading,setIsLoading] = useState(true)
     const [categoryId,setCategoryId] = useState(1)
+    const [currentPage,setCurrentPage] = useState(1)
 
     useEffect(()=>{
-        fetch("https://633d74927e19b178290ecbd0.mockapi.io/pizzas").then(res=>{return res.json();}).then((arr)=>{
+        setIsLoading(true)
+        fetch("https://633d74927e19b178290ecbd0.mockapi.io/pizzas?"+ (categoryId!==1?`&category=${categoryId}`:"" + `&name=${inputValue}` + `&page=${currentPage}&limit=4`)).then(res=>{return res.json();}).then((arr)=>{
 
             setPizzasDB(prevState => {prevState=[]})
             setIsLoading(false)
             setPizzasDB(arr)
         })
-    },[])
+    },[categoryId,inputValue,currentPage])
     return(
         <>
-            <h2>Все пиццы</h2>
+            <h2>{!inputValue?"Все пиццы":"Результаты поиска"}</h2>
             <br/>
             <div className="content__top">
                 <Categories categoryId={categoryId} setCategoryId={setCategoryId}/>
@@ -45,7 +51,6 @@ export const Home = ()=>{
                             }
                         }
                     ).map((item)=>{
-                        console.log(item)
                         return(isLoading?<Skeleton/>:<PizzaBlock name = {item.name}
                                                                  key = {item.id}
                                                                  sizes = {item.sizes}
@@ -57,5 +62,8 @@ export const Home = ()=>{
                         />)
                     })}
             </div>
-        </div></>)
+        </div>
+            {categoryId==1&&!inputValue&&<Pagination setCurrentPage={setCurrentPage}/>}
+        </>)
 }
+export default Home
