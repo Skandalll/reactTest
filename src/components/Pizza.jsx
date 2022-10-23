@@ -25,10 +25,10 @@ function PizzaBlock({imageUrl,name,price,types,sizes}){
         <h4 className="pizza-block__title">{name}</h4>
         <div className="pizza-block__selector">
             <ul>
-                {types.map((index,i)=>{return (<li onClick={(event)=>{event.target.className==="active"?setActiveType("empty"):setActiveType(i)} } className={ activeType===i?"active":""}> {typesList[index]}</li>)})}
+                {types.map((index,i)=>{return (<li key={i} onClick={(event)=>{event.target.className==="active"?setActiveType("empty"):setActiveType(i)} } className={ activeType===i?"active":""}> {typesList[index]}</li>)})}
             </ul>
             <ul>
-                {sizes.map((size,i)=>{return (<li onClick={(event)=>{event.target.className==="active"?setActiveSize("empty"):setActiveSize(i)}} className={activeSize===i?"active":""}>{size} см.</li>)})}
+                {sizes.map((size,i)=>{return (<li key={i} onClick={(event)=>{event.target.className==="active"?setActiveSize("empty"):setActiveSize(i)}} className={activeSize===i?"active":""}>{size} см.</li>)})}
             </ul>
 
         </div>
