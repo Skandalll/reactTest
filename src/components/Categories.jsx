@@ -1,8 +1,12 @@
 import {useState} from "react";
+import {setCategoryId} from "../redux/slices/filterSlice";
+import {useDispatch, useSelector} from "react-redux";
 
-function Categories({categoryId,setCategoryId}){
+function Categories(){
+    const categoryId= useSelector((state)=>state.filter.categoryId)
+    const dispatch=useDispatch()
     const setIndexClick = (index)=>{
-        setCategoryId(index)
+        dispatch(setCategoryId(index))
     }
     const menuTabsList = [
         {name:"Все",id:1},

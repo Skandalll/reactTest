@@ -1,5 +1,10 @@
 import {useState} from "react";
-function  Sort({setSortType,sortType}){
+import {useDispatch, useSelector} from "react-redux";
+import {setSortType} from "../redux/slices/filterSlice";
+
+function  Sort(){
+    const sortType = useSelector((state)=>state.filter.sortType)
+    const dispatch = useDispatch()
     const [sortVisibility,setSortVisibility]= useState(false)
     const sortList=["Популярности","Цене","Алфавиту"]
     return (<div className="sort">
@@ -25,7 +30,7 @@ function  Sort({setSortType,sortType}){
                     {
                         sortList.map((item,i)=>{
                             return (
-                                <li onClick={()=>setSortType(i)} className={i===sortType?"active":""}>{item}</li>
+                                <li onClick={()=>dispatch(setSortType(i))} className={i===sortType?"active":""}>{item}</li>
                             )
                         })
                     }

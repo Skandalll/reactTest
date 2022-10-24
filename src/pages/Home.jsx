@@ -8,31 +8,36 @@ import Pagination from "../components/Pagination/Pagination";
 import {useContext} from "react";
 import {SearchContext} from "../App";
 
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
 
 function Home(){
-    const {inputValue,setInputValue} = useContext(SearchContext)
-    const [sortType,setSortType]=useState(0);
+
+    const sortType = useSelector((state)=>state.filter.sortType)
+    const categoryId = useSelector(state => state.filter.categoryId);
+    const dispatch=useDispatch()
+
+    const inputValue = useSelector((state)=>state.search.value)
     const [pizzasDB,setPizzasDB] = useState([{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""}])
     const [isLoading,setIsLoading] = useState(true)
-    const [categoryId,setCategoryId] = useState(1)
     const [currentPage,setCurrentPage] = useState(1)
 
     useEffect(()=>{
-        setIsLoading(true)
-        fetch("https://633d74927e19b178290ecbd0.mockapi.io/pizzas?"+ (categoryId!==1?`&category=${categoryId}`:"" + `&name=${inputValue}` + `&page=${currentPage}&limit=4`)).then(res=>{return res.json();}).then((arr)=>{
-
-            setPizzasDB(prevState => {prevState=[]})
-            setIsLoading(false)
-            setPizzasDB(arr)
-        })
+        setIsLoading(true);
+        axios.get("https://633d74927e19b178290ecbd0.mockapi.io/pizzas?"+ (categoryId!==1?`&category=${categoryId}`:"" + `&name=${inputValue}` + `&page=${currentPage}&limit=4`))
+            .then(res=>{
+                setPizzasDB(res.data)
+                setIsLoading(false)
+            })
     },[categoryId,inputValue,currentPage])
+
     return(
         <>
             <h2>{!inputValue?"Все пиццы":"Результаты поиска"}</h2>
             <br/>
             <div className="content__top">
-                <Categories categoryId={categoryId} setCategoryId={setCategoryId}/>
-                <Sort sortType={sortType} setSortType={setSortType}/>
+                <Categories/>
+                <Sort/>
             </div>
             <br/>
 
@@ -41,26 +46,27 @@ function Home(){
             <div className="content__items">
                 {
 
-                    pizzasDB.sort((item,sItem)=> {
-                            if(sortType===0){
-                                return item.rating - sItem.rating
-                            } else if(sortType===1){
-                                return item.price - sItem.price
-                            } else{
-                                return (sItem.name > item.name?-1:1)
-                            }
+                pizzasDB.sort((item,sItem)=> {
+                        if(sortType===0){
+                            return item.rating - sItem.rating
+                        } else if(sortType===1){
+                            return item.price - sItem.price
+                        } else{
+                            return (sItem.name > item.name?-1:1)
                         }
-                    ).map((item)=>{
-                        return(isLoading?<Skeleton/>:<PizzaBlock name = {item.name}
-                                                                 key = {item.id}
-                                                                 sizes = {item.sizes}
-                                                                 imageUrl = {item.imageUrl}
-                                                                 types = {item.types}
-                                                                 price={item.price}
+                    }
+                ).map((item,i)=> {
+                    return (isLoading ? <Skeleton key={i}/> : <PizzaBlock key={i}
+                                                                          name={item.name}
+                                                                          sizes={item.sizes}
+                                                                          imageUrl={item.imageUrl}
+                                                                          types={item.types}
+                                                                          price={item.price}
 
 
-                        />)
-                    })}
+                    />)
+                })
+                }
             </div>
         </div>
             {categoryId==1&&!inputValue&&<Pagination setCurrentPage={setCurrentPage}/>}

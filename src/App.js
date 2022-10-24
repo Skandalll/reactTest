@@ -1,10 +1,12 @@
 import "./scss/app.scss";
 
-import Header from "./components/Header";
-import {Route,Routes} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 import {createContext, useContext, useEffect, useState} from "react";
-import Home from "./pages/Home";
 import {NotFound} from "./pages/NotFound";
+import {Route,Routes} from 'react-router-dom';
+
+import Header from "./components/Header";
+import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 
 export const SearchContext=createContext("")
