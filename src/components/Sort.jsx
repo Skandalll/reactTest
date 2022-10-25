@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setSortType} from "../redux/slices/filterSlice";
 
@@ -6,9 +6,20 @@ function  Sort(){
     const sortType = useSelector((state)=>state.filter.sortType)
     const dispatch = useDispatch()
     const [sortVisibility,setSortVisibility]= useState(false)
+    const sortRef= useRef()
     const sortList=["Популярности","Цене","Алфавиту"]
+    useEffect(()=>{
+        const handleClick = (e)=>{
+            if(!e.path.includes(sortRef.current)){
+                setSortVisibility(false)
+            }
+        }
+        document.body.addEventListener("click",handleClick)
+        return ()=>{document.body.removeEventListener("click",handleClick)}
+
+    },[])
     return (<div className="sort">
-        <div onClick={()=>setSortVisibility((prev)=>!prev)} className="sort__label unselectable" >
+        <div ref={sortRef} onClick={()=>setSortVisibility((prev)=>!prev)} className="sort__label unselectable" >
             <svg
                 width="10"
                 height="6"
@@ -21,8 +32,8 @@ function  Sort(){
                     fill="#2C2C2C"
                 />
             </svg>
-            <b>Сортировка по:</b>
-            <span >популярности</span>
+            <b >Сортировка по:</b>
+            <span>популярности</span>
         </div>
         {
             sortVisibility && (<div className="sort__popup unselectable">
@@ -30,7 +41,7 @@ function  Sort(){
                     {
                         sortList.map((item,i)=>{
                             return (
-                                <li onClick={()=>dispatch(setSortType(i))} className={i===sortType?"active":""}>{item}</li>
+                                <li key={i} onClick={()=>dispatch(setSortType(i))} className={i===sortType?"active":""}>{item}</li>
                             )
                         })
                     }

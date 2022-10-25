@@ -1,20 +1,23 @@
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart} from "../redux/slices/cartSlice";
 
-function PizzaBlock({imageUrl,name,price,types,sizes}){
-    const typesList=["Традиционное","Тонкое"]
+function PizzaBlock({imageUrl,name,price,types,sizes,id}){
+    const dispatch = useDispatch()
+    const typesList = ["Традиционное","Тонкое"]
+    const cardItem = useSelector((state)=>state.cart.items.find((obj)=>id===obj.id))
     const [activeSize,setActiveSize]=useState("empty")
     const [activeType,setActiveType]=useState("empty")
     const [choseDisplay,setChoseDisplay]=useState(false)
-    const [pizzaCount,setPizzaCount]=useState(0)
+    const pizzaCount = cardItem?cardItem.count:0
+
+    function onClickAdd (imageUrl,name,price,size,type,id){
+        dispatch(addToCart({imageUrl,name,price,size,type,id}))
+    }
 
     function choseDisplayCheck(){
-        if(activeType==="empty"||activeSize==="empty"){
-            setChoseDisplay(true)
-            setTimeout(()=>{setChoseDisplay(false)},5000)
-        }else {
-            setPizzaCount(pizzaCount+1)
-            setChoseDisplay(false)
-        }
+        setChoseDisplay(true)
+        setTimeout(()=>{setChoseDisplay(false)},5000)
     }
     return (<div className="pizza-block">
         <img
@@ -34,10 +37,10 @@ function PizzaBlock({imageUrl,name,price,types,sizes}){
         </div>
         <div className="pizza-block__bottom">
             <div className="pizza-block__price">{price}₽</div>
-            <div onClick={()=>{
-                choseDisplayCheck()
+            <div onClick={
+                ()=>{activeType!=="empty"&&activeSize!=="empty"?onClickAdd(imageUrl,name,price,activeSize,typesList[activeType],id):choseDisplayCheck()}
             }
-            } className="button button--outline button--add">
+                 className="button button--outline button--add">
                 <svg
                     width="12"
                     height="12"

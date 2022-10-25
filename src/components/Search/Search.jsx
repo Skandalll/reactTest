@@ -7,8 +7,10 @@ import {setInputValue,clearInputValue} from "../../redux/slices/searchSlice";
 
 function Search() {
     const inputValue = useSelector((state)=>state.search.value)
+
     const setValue = e => dispatch(setInputValue(e.target.value))
     const debouncedSetValue = debounce(setValue,500 )
+
     const dispatch= useDispatch()
     const inputRef = useRef()
     return (
