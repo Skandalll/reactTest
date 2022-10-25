@@ -7,12 +7,14 @@ import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/Pagination";
 import {useContext} from "react";
 import {SearchContext} from "../App";
-
+import {setCurrentPage} from "../redux/slices/paginationSlice";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 
 function Home(){
-
+    function setPage(i){
+        dispatch(setCurrentPage(i))
+    }
     const sortType = useSelector((state)=>state.filter.sortType)
     const categoryId = useSelector(state => state.filter.categoryId);
     const dispatch=useDispatch()
@@ -20,7 +22,8 @@ function Home(){
     const inputValue = useSelector((state)=>state.search.value)
     const [pizzasDB,setPizzasDB] = useState([{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""},{name:""}])
     const [isLoading,setIsLoading] = useState(true)
-    const [currentPage,setCurrentPage] = useState(1)
+    //const [currentPage,setCurrentPage] = useState(1)
+    const currentPage = useSelector(state=>state.pagination.currentPage)
 
     useEffect(()=>{
         setIsLoading(true);
@@ -57,6 +60,7 @@ function Home(){
                     }
                 ).map((item,i)=> {
                     return (isLoading ? <Skeleton key={i}/> : <PizzaBlock key={i}
+                                                                          id = {item.id}
                                                                           name={item.name}
                                                                           sizes={item.sizes}
                                                                           imageUrl={item.imageUrl}
@@ -69,7 +73,7 @@ function Home(){
                 }
             </div>
         </div>
-            {categoryId==1&&!inputValue&&<Pagination setCurrentPage={setCurrentPage}/>}
+            {categoryId==1&&!inputValue&&<Pagination setPage={setPage}/>}
         </>)
 }
 export default Home
